@@ -1,12 +1,23 @@
-// src/App.tsx
+import './App.css';
+import { createBrowserRouter, RouterProvider } from 'react-router';
 
-import "./App.css";
+const router = createBrowserRouter([
+  {
+    path: '/',
+    lazy: () => import('./components/index-page'),
+  },
+  {
+    path: '/:domain',
+    lazy: () => import('./components/detail-page'),
+  },
+  {
+    path: '*',
+    lazy: () => import('./components/404'),
+  }
+]);
 
 function App() {
-
-  return (
-    <></>
-  );
+  return <RouterProvider router={router} />;
 }
 
 export default App;

@@ -141,8 +141,9 @@ app.put(
     const hex =
       typeof payload.value === 'number' ? payload.value.toString(16) : null;
 
-    await c.env.CONSTANTS_DATABASE.prepare(
-      `INSERT INTO constants
+    try {
+      await c.env.CONSTANTS_DATABASE.prepare(
+        `INSERT INTO constants
        VALUES (?, ?, ?, ?, ?, ?, ?)
        ON CONFLICT(domain, name)
          DO UPDATE SET value=excluded.value,
@@ -150,18 +151,21 @@ app.put(
                        tags=excluded.tags,
                        description=excluded.description,
                        link=excluded.link`
-    )
-      .bind(
-        domain,
-        payload.name,
-        value,
-        hex,
-        payload.tags ?? null,
-        payload.description,
-        payload.link ?? null
       )
-      .run();
-    return c.json({ domain, name: payload.name }, 201);
+        .bind(
+          domain,
+          payload.name,
+          value,
+          hex,
+          payload.tags ?? null,
+          payload.description,
+          payload.link ?? null
+        )
+        .run();
+      return c.json({ domain, name: payload.name }, 201);
+    } catch {
+      return c.json({ error: 'Domain is not created' }, 400);
+    }
   }
 );
 
