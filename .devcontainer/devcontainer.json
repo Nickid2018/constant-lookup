@@ -1,0 +1,12 @@
+{
+	"name": "Dev Container",
+	"image": "mcr.microsoft.com/devcontainers/base:bookworm",
+	"containerEnv": {
+		"COREPACK_ENABLE_DOWNLOAD_PROMPT": "0"
+	},
+	"features": {
+		"ghcr.io/devcontainers/features/node:1": {"version": "lts" },
+		"ghcr.io/devcontainers/features/git": {}
+	},
+	"updateContentCommand": "bash ./.devcontainer/setup.sh"
+}
