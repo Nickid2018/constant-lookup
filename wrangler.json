@@ -13,5 +13,12 @@
 	"assets": {
 		"directory": "./dist/client",
 		"not_found_handling": "single-page-application"
-	}
+	},
+	"d1_databases": [
+		{
+			"binding": "CONSTANTS_DATABASE",
+			"database_name": "constants",
+			"database_id": "<DATABASE_ID_HERE>"
+		}
+	]
 }
