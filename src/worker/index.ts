@@ -10,7 +10,7 @@ const cacheMiddleware = async (
   c: Context<{ Bindings: Env }>,
   next: () => Promise<void>
 ) => {
-  c.res.headers.set('Cache-Control', 'public, max-age=3153600');
+  c.res.headers.set('Cache-Control', 'public, s-maxage=259200, max-age=604800');
   return next();
 };
 
@@ -29,12 +29,9 @@ app.get('/api/domain/:domain', cacheMiddleware, async c => {
 
   const domain = c.req.param('domain');
   let statement: string;
-  let binds: any[];
+  let binds: (string | string[])[];
 
-  if (!name && !value && !tag) {
-    statement = 'SELECT * FROM constants WHERE domain = ?';
-    binds = [domain];
-  } else if (name) {
+  if (name) {
     statement = 'SELECT * FROM constants WHERE domain = ? AND name = ?';
     binds = [domain, name];
   } else if (value && tag) {
@@ -43,9 +40,12 @@ app.get('/api/domain/:domain', cacheMiddleware, async c => {
   } else if (value) {
     statement = `SELECT * FROM constants WHERE domain = ? AND ${hex ? 'hex_value' : 'value'} LIKE ?`;
     binds = [domain, `${value}%`];
-  } else {
+  } else if (tag){
     statement = 'SELECT * FROM constants WHERE domain = ? AND tags IN ?';
     binds = [domain, tag];
+  } else {
+    statement = 'SELECT * FROM constants WHERE domain = ?';
+    binds = [domain];
   }
 
   return c.json(
