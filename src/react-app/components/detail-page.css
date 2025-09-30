@@ -1,0 +1,60 @@
+.main-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+}
+
+.display-table {
+    border-collapse: collapse;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: scroll;
+}
+
+.display-table tr:nth-child(odd) {
+    background-color: #f1f1f1;
+}
+
+.display-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.display-table .name-field {
+    text-align: left;
+    padding: .5rem;
+}
+
+.display-table .value-field {
+    text-align: center;
+    padding: .5rem;
+}
+
+.display-table .desc-field {
+    text-align: left;
+    padding: .5rem;
+}
+
+.display-table .name-header {
+    text-align: center;
+    padding: .5rem;
+    font-weight: bold;
+    width: 20%;
+}
+
+.display-table .value-header {
+    text-align: center;
+    padding: .5rem;
+    font-weight: bold;
+    width: 10%;
+}
+
+.display-table .desc-header {
+    text-align: left;
+    padding: .5rem;
+    font-weight: bold;
+}

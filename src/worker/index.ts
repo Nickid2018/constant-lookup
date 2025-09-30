@@ -10,7 +10,7 @@ const cacheMiddleware = async (
   c: Context<{ Bindings: Env }>,
   next: () => Promise<void>
 ) => {
-  c.res.headers.set('Cache-Control', 'public, s-maxage=259200, max-age=604800');
+  c.res.headers.set('Cache-Control', 'public, s-maxage=259200, max-age=86400');
   return next();
 };
 
