@@ -1,7 +1,7 @@
 import './detail-page.css';
 
 import { useParams } from 'react-router';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 interface ConstantEntry {
   name: string;
@@ -14,6 +14,7 @@ function DetailPage({ domain }: { domain: string }) {
   const [list, setList] = useState<ConstantEntry[]>([]);
   const [search, setSearch] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(true);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     setLoading(true);
@@ -22,6 +23,7 @@ function DetailPage({ domain }: { domain: string }) {
       const data = await res.json();
       setList(data);
       setLoading(false);
+      inputRef.current?.focus();
     })().catch(console.error);
   }, [domain, search]);
 
@@ -29,6 +31,7 @@ function DetailPage({ domain }: { domain: string }) {
     <div className="main-container">
       <h2 className="header">Constant Lookup for {domain}</h2>
       <input
+        ref={inputRef}
         disabled={loading}
         className="input"
         onChange={e => setSearch(e.target.value)}
