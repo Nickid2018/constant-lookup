@@ -1,3 +1,5 @@
+import './detail-page.css';
+
 import { useParams } from 'react-router';
 import { useEffect, useState } from 'react';
 
@@ -12,15 +14,19 @@ function DetailPage({ domain }: { domain: string }) {
   const [search, setSearch] = useState<string>('');
 
   useEffect(() => {
-    fetch(`/api/${domain}?value=${search}`)
+    fetch(`/api/domain/${domain}?value=${search}`)
       .then(res => res.json())
       .then(data => setList(data));
   }, [domain, search]);
 
   return (
     <div className="main-container">
-      <h2>Constant Lookup for {domain}</h2>
-      <input onChange={e => setSearch(e.target.value)} value={search} />
+      <h2 className="header">Constant Lookup for {domain}</h2>
+      <input
+        className="input"
+        onChange={e => setSearch(e.target.value)}
+        value={search}
+      />
       <table className="display-table">
         <thead>
           <tr>
