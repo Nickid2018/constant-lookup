@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 
 interface ConstantEntry {
   name: string;
+  tags: string;
   value: string;
   description: string;
 }
@@ -12,17 +13,23 @@ interface ConstantEntry {
 function DetailPage({ domain }: { domain: string }) {
   const [list, setList] = useState<ConstantEntry[]>([]);
   const [search, setSearch] = useState<string>('');
+  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    fetch(`/api/domain/${domain}?value=${search}`)
-      .then(res => res.json())
-      .then(data => setList(data));
+    setLoading(true);
+    (async () => {
+      const res = await fetch(`/api/domain/${domain}?value=${search}`);
+      const data = await res.json();
+      setList(data);
+      setLoading(false);
+    })().catch(console.error);
   }, [domain, search]);
 
   return (
     <div className="main-container">
       <h2 className="header">Constant Lookup for {domain}</h2>
       <input
+        disabled={loading}
         className="input"
         onChange={e => setSearch(e.target.value)}
         value={search}

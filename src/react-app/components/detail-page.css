@@ -25,11 +25,15 @@
     overflow: scroll;
 }
 
-.display-table tr:nth-child(odd) {
+.display-table thead tr {
+    background-color: lightgray;
+}
+
+.display-table tbody tr:nth-child(odd) {
     background-color: #f1f1f1;
 }
 
-.display-table tr:nth-child(even) {
+.display-table tbody tr:nth-child(even) {
     background-color: #f9f9f9;
 }
 
@@ -39,7 +43,7 @@
 }
 
 .display-table .value-field {
-    text-align: center;
+    text-align: left;
     padding: .5rem;
 }
 

@@ -16,7 +16,7 @@ const cacheMiddleware = async (
 
 app.get('/api/domains', cacheMiddleware, async c => {
   return c.json(
-    (await c.env.CONSTANTS_DATABASE.prepare('SELECT * FROM domains').run())
+    (await c.env.CONSTANTS_DATABASE.prepare('SELECT * FROM domains ORDER BY domain').run())
       .results
   );
 });
@@ -32,19 +32,19 @@ app.get('/api/domain/:domain', cacheMiddleware, async c => {
   let binds: (string | string[])[];
 
   if (name) {
-    statement = 'SELECT * FROM constants WHERE domain = ? AND name = ?';
+    statement = 'SELECT * FROM constants WHERE domain = ? AND name = ? ORDER BY value AND name';
     binds = [domain, name];
   } else if (value && tag) {
-    statement = `SELECT * FROM constants WHERE domain = ? AND ${hex ? 'hex_value' : 'value'} LIKE ? AND tags IN ?`;
+    statement = `SELECT * FROM constants WHERE domain = ? AND ${hex ? 'hex_value' : 'value'} LIKE ? AND tags IN ? ORDER BY value AND name`;
     binds = [domain, `${value}%`, tag];
   } else if (value) {
-    statement = `SELECT * FROM constants WHERE domain = ? AND ${hex ? 'hex_value' : 'value'} LIKE ?`;
+    statement = `SELECT * FROM constants WHERE domain = ? AND ${hex ? 'hex_value' : 'value'} LIKE ? ORDER BY value AND name`;
     binds = [domain, `${value}%`];
   } else if (tag){
-    statement = 'SELECT * FROM constants WHERE domain = ? AND tags IN ?';
+    statement = 'SELECT * FROM constants WHERE domain = ? AND tags IN ? ORDER BY value AND name';
     binds = [domain, tag];
   } else {
-    statement = 'SELECT * FROM constants WHERE domain = ?';
+    statement = 'SELECT * FROM constants WHERE domain = ? ORDER BY value AND name';
     binds = [domain];
   }
 
@@ -62,7 +62,7 @@ app.get('/api/domain/:domain/tags', cacheMiddleware, async c => {
   return c.json(
     (
       await c.env.CONSTANTS_DATABASE.prepare(
-        'SELECT DISTINCT(tags) FROM constants WHERE domain = ?'
+        'SELECT DISTINCT(tags) FROM constants WHERE domain = ? ORDER BY tags'
       )
         .bind(domain)
         .run()
